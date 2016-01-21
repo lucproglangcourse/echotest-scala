@@ -28,7 +28,7 @@ class EchoTest extends FunSuite {
 
   test("A simple echo inside a list should still echo an empty argument") {
     val echos = List(new SimpleEcho)
-    val result = echos(1).echo("")
+    val result = echos(0).echo("")
     assert(result == "")
   }
 
