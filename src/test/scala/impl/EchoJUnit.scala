@@ -1,8 +1,8 @@
 package edu.luc.cs.cs371.echo
 package impl
 
-import org.junit.*
-import Assert.*
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.Assertions.*
 
 import java.io.{ByteArrayOutputStream, PrintStream}
 import scala.jdk.CollectionConverters.*
