@@ -63,9 +63,10 @@ class EchoJUnit:
     val in = new java.io.ByteArrayInputStream("hello\nworld\n".getBytes)
     scala.Console.withOut(os):
       scala.Console.withIn(in):
-        main.Interactive.main(Array.empty[String])
+        main.Interactive.main(Array("--prompt"))
     val lines = ba.toString.linesIterator.toList
-    assertEquals("hello", lines(0))
-    assertEquals("world", lines(1))
+    assertEquals("Enter a message to echo (EOF to exit) >hello", lines(0))
+    assertEquals("Enter a message to echo (EOF to exit) >world", lines(1))
+    assertEquals("Enter a message to echo (EOF to exit) >", lines(2))
 
 end EchoJUnit
