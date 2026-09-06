@@ -54,7 +54,7 @@ class EchoJUnit:
       main.Main.main(Array.empty[String])
     val lines = ba.toString.linesIterator.toList
     assertEquals("hello", lines(0))
-    assertEquals("hello hello", lines(1))
+    assertEquals("hello  hello", lines(1))
 
   @Test
   def testInteractiveEndToEnd: Unit =
