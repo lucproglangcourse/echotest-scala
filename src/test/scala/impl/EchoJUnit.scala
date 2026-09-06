@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 
 import java.io.{ByteArrayOutputStream, PrintStream}
+import java.nio.charset.StandardCharsets.UTF_8
 import scala.jdk.CollectionConverters.*
 
 /**
@@ -52,7 +53,7 @@ class EchoJUnit:
     val os = new PrintStream(ba)
     scala.Console.withOut(os):
       main.Main.main(Array.empty[String])
-    val lines = ba.toString.linesIterator.toList
+    val lines = ba.toString(UTF_8).linesIterator.toList
     assertEquals("hello", lines(0))
     assertEquals("hello  hello", lines(1))
 
@@ -64,7 +65,7 @@ class EchoJUnit:
     scala.Console.withOut(os):
       scala.Console.withIn(in):
         main.Interactive.main(Array("--prompt"))
-    val lines = ba.toString.linesIterator.toList
+    val lines = ba.toString(UTF_8).linesIterator.toList
     assertEquals("Enter a message to echo (EOF to exit) >hello", lines(0))
     assertEquals("Enter a message to echo (EOF to exit) >world", lines(1))
     assertEquals("Enter a message to echo (EOF to exit) >", lines(2))
