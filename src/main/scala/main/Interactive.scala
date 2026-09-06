@@ -4,11 +4,6 @@ package main
 import edu.luc.cs.cs371.echo.impl.{DoubleEcho, SimpleEcho}
 import mainargs.{Flag, ParserForMethods, arg, main}
 
-import java.io.{FileInputStream, FileNotFoundException}
-
-/** Typesafe equality instance to help with readLine. */
-given CanEqual[AnyRef | Null, Null] = CanEqual.derived
-
 object Interactive:
 
   val promptString = "Enter a message to echo (EOF to exit) >"
@@ -25,15 +20,15 @@ object Interactive:
     val echo = if doubleEcho.value then new DoubleEcho else new SimpleEcho
     if doPrompt then
       print(promptString)
-    var line: String | Null = scala.io.StdIn.readLine()
-    while line != null do
-      println(echo.echo(line))
+    var line = Option(scala.io.StdIn.readLine())
+    while line.isDefined do
+      println(echo.echo(line.get))
       // terminate on I/O error such as SIGPIPE
       if scala.sys.process.stdout.checkError() then
         sys.exit(1)
       if doPrompt then
         print(promptString)
-      line = scala.io.StdIn.readLine()
+      line = Option(scala.io.StdIn.readLine())
 
   // external entry point into Scala application
   def main(args: Array[String]): Unit =
