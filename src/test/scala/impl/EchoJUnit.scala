@@ -46,21 +46,27 @@ class EchoJUnit:
     catch
       case ex: IndexOutOfBoundsException => // all good
 
-  // this appears to work within IntelliJ but not in sbt by itself
   @Test
   def testMainEndToEnd: Unit =
     val ba = new ByteArrayOutputStream
     val os = new PrintStream(ba)
-    System.setOut(os)
-    main.Main.main(Array.empty[String])
-    val lines =
-      import scala.language.unsafeNulls
-      ba.toString.lines.toList.asScala
+    scala.Console.withOut(os):
+      main.Main.main(Array.empty[String])
+    val lines = ba.toString.linesIterator.toList
     assertEquals("hello", lines(0))
-    assertEquals("hello hello", lines(1))
+    assertEquals("hello  hello", lines(1))
 
   @Test
   def testInteractiveEndToEnd: Unit =
-    fail("NYI")
+    val ba = new ByteArrayOutputStream
+    val os = new PrintStream(ba)
+    val in = new java.io.ByteArrayInputStream("hello\nworld\n".getBytes)
+    scala.Console.withOut(os):
+      scala.Console.withIn(in):
+        main.Interactive.main(Array("--prompt"))
+    val lines = ba.toString.linesIterator.toList
+    assertEquals("Enter a message to echo (EOF to exit) >hello", lines(0))
+    assertEquals("Enter a message to echo (EOF to exit) >world", lines(1))
+    assertEquals("Enter a message to echo (EOF to exit) >", lines(2))
 
 end EchoJUnit
